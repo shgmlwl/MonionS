@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="default" data-font="normal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="description" content="시니어와 시각장애인도 혼자 보험금을 청구할 수 있도록 만든 유니버설 디자인 프로토타입 — 큰 글씨, 고대비, 스크린리더, AI 음성 도우미">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="모니모 시니어">
+<title>모니모 시니어 — 유니버설 보험금 청구 프로토타입</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="stage">
+  <!-- 휴대폰 판형 앱 -->
+  <div class="device" id="device">
+    <div class="scroller" id="scroller"><main id="screen"></main></div>
+
+    <button id="fab" class="fab" data-act="ai-open" aria-expanded="false" aria-controls="ai" hidden>
+      <span class="orb" aria-hidden="true"><i></i><i></i><i></i></span>AI 도우미
+    </button>
+
+    <section id="ai" class="ai" aria-label="AI 음성 도우미" hidden>
+      <div class="ai-head">
+        <div class="ai-orb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="ai-title"><p class="ai-name">AI 도우미</p><p class="ai-status" id="ai-status">준비 중</p></div>
+        <button class="icon-btn" data-act="ai-close" aria-label="AI 도우미 닫기"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg></button>
+      </div>
+      <div class="ai-body" id="ai-log" aria-live="polite"></div>
+      <div class="ai-foot">
+        <div class="mic-row">
+          <button class="mic" id="mic" data-act="mic" aria-pressed="false" aria-label="말하기 시작"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></button>
+          <p class="mic-txt" id="mic-txt" aria-hidden="true">눌러서 말하기</p>
+        </div>
+        <p class="ai-warn" id="ai-warn" role="alert"></p>
+        <p class="ai-hint" id="ai-hint">이렇게 말하거나 눌러도 돼요</p>
+        <div class="chips" id="ai-chips" role="group" aria-labelledby="ai-hint"></div>
+      </div>
+    </section>
+    <div class="toast" id="toast" role="status" hidden></div>
+    <div class="curtain" id="curtain" aria-hidden="true" hidden>화면이 가려져 있어요.<br>소리만 듣고 이동해 보세요.<br><br>Tab 또는 → : 다음 항목<br>Enter : 누르기</div>
+    <div id="live" class="sr-only" aria-live="polite"></div>
+  </div>
+
+  <!-- 넓은 화면(전시)에서만 보이는 체험 패널 -->
+  <aside class="exhibit" aria-label="전시 체험 도구">
+    <p class="kick">GUI · 유니버설 디자인 프로토타입</p>
+    <h2>모니모 시니어<br>보험금 청구</h2>
+    <p class="intro">시니어, 몸이 불편한 분, 시각장애인까지 혼자 청구할 수 있도록 큰 글씨·고대비·스크린리더·AI 음성 도우미를 담았어요.</p>
+    <div class="ex-sec">
+      <h3>체험 모드</h3>
+      <button class="ex-tg" role="switch" aria-checked="false" data-act="toggle-sr">스크린리더처럼 읽기<span class="s" aria-hidden="true">꺼짐</span></button>
+      <button class="ex-tg" role="switch" aria-checked="false" data-act="toggle-curtain">화면 가리기 (시각장애 체험)<span class="s" aria-hidden="true">꺼짐</span></button>
+      <button class="ex-tg" role="switch" aria-checked="false" data-act="toggle-voice-ex">화면마다 소리 안내<span class="s" aria-hidden="true">꺼짐</span></button>
+    </div>
+    <div class="ex-sec" aria-hidden="true">
+      <h3>지금 들리는 말</h3>
+      <div class="cap" id="cap"><p class="txt empty">소리가 나오거나 말을 하면 여기에 글자로도 보여 드려요.</p></div>
+    </div>
+    <div class="ex-sec">
+      <h3>조작법 (스크린리더 체험 중)</h3>
+      <ul class="keys">
+        <li><kbd>Tab</kbd><kbd>→</kbd>다음 항목 듣기</li>
+        <li><kbd>⇧Tab</kbd><kbd>←</kbd>이전 항목 듣기</li>
+        <li><kbd>Enter</kbd><kbd>Space</kbd>누르기·고르기</li>
+        <li><kbd>Esc</kbd>AI 도우미·창 닫기</li>
+      </ul>
+    </div>
+    <div class="ex-sec">
+      <h3>바로 체험하기</h3>
+      <button class="ex-btn" data-act="demo-ai">AI 도우미와 말로 청구하기</button>
+      <button class="ex-btn light" data-act="demo-reset">처음부터 (가입 화면)</button>
+      <div class="ex-env" id="ex-env"></div>
+    </div>
+    <p class="ex-foot">개인 정보·병원·금액은 모두 예시예요. 사진과 목소리는 이 기기 안에서만 처리돼요.</p>
+  </aside>
+</div>
+
+<noscript><p style="padding:2rem;font-size:20px">이 프로토타입은 자바스크립트가 필요해요.</p></noscript>
+<script src="js/voice.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
